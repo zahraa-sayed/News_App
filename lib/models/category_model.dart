@@ -14,12 +14,12 @@ class CategoryModel {
   });
 
   static List<CategoryModel> categories = [
-    CategoryModel(id: "id", title: "General", imagePath: ImageAssets.generalBlack),
-    CategoryModel(id: "id", title: "Sports", imagePath: ImageAssets.sportBlack),
-    CategoryModel(id: "id", title: "Entertainment", imagePath: ImageAssets.entertainmentBlack),
-    CategoryModel(id: "id", title: "Health", imagePath: ImageAssets.healthBlack),
-    CategoryModel(id: "id", title: "Science", imagePath: ImageAssets.scienceBlack),
-    CategoryModel(id: "id", title: "Technology", imagePath: ImageAssets.technologyBlack),
-    CategoryModel(id: "id", title: "Business", imagePath: ImageAssets.businessBlack),
+    CategoryModel(id: "general", title: "General", imagePath: ImageAssets.generalBlack),
+    CategoryModel(id: "sports", title: "Sports", imagePath: ImageAssets.sportBlack),
+    CategoryModel(id: "entertainment", title: "Entertainment", imagePath: ImageAssets.entertainmentBlack),
+    CategoryModel(id: "health", title: "Health", imagePath: ImageAssets.healthBlack),
+    CategoryModel(id: "science", title: "Science", imagePath: ImageAssets.scienceBlack),
+    CategoryModel(id: "technology", title: "Technology", imagePath: ImageAssets.technologyBlack),
+    CategoryModel(id: "business", title: "Business", imagePath: ImageAssets.businessBlack),
   ];
 }

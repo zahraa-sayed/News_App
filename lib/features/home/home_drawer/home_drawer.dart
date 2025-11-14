@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/core/colors_manager.dart';
+import 'package:news_app/providers/home_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeDrawer extends StatelessWidget {
-  const HomeDrawer({super.key, required this.goToHome});
+  const HomeDrawer({super.key});
 
-  final void Function() goToHome;
+  //final void Function() goToHome;
 
   @override
   Widget build(BuildContext context) {
+    var homeProvider = Provider.of<HomeProvider>(context);
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +36,8 @@ class HomeDrawer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: InkWell(
               onTap: () {
-                goToHome();
+                homeProvider.goToCategoriesView();
+                Navigator.pop(context);
               },
               child: Row(
                 children: [
