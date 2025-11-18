@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/core/colors_manager.dart';
 
-import '../../../api/models/article_response/Article.dart';
+import '../../../data/api/models/article_response/Article.dart';
+
 
 class ArticleItem extends StatelessWidget {
   const ArticleItem({super.key, required this.article});

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app/api/api_services.dart';
-import 'package:news_app/api/models/article_response/Article.dart';
 import 'package:news_app/core/colors_manager.dart';
+import 'package:news_app/data/api/api_services.dart';
+import 'package:news_app/data/data_sources_imple/articles_api_datasources.dart';
+import 'package:news_app/data/data_sources_imple/sources_api_datasource.dart';
+import 'package:news_app/data/repository_imple/articles_repository_impl.dart';
+import 'package:news_app/data/repository_imple/sources_repository_impl.dart';
 import 'package:news_app/features/home/sources_view/article.dart';
-import 'package:news_app/features/home/sources_view/articles_provider.dart';
-import 'package:news_app/features/home/sources_view/sources_provider.dart';
+import 'package:news_app/features/home/sources_view/articles_view_model.dart';
+import 'package:news_app/features/home/sources_view/sources_view_model.dart';
 import 'package:news_app/models/category_model.dart';
 import 'package:provider/provider.dart';
-
-import '../../../api/models/sources_response/source.dart';
+import '../../../data/api/models/article_response/Article.dart';
 
 class SourcesView extends StatefulWidget {
   const SourcesView({super.key, required this.category});
@@ -22,8 +24,8 @@ class SourcesView extends StatefulWidget {
 }
 
 class _SourcesViewState extends State<SourcesView> {
-  late SourcesProvider sourcesProvider;
-  late ArticlesProvider articlesProvider;
+  late SourcesViewModel sourcesProvider;
+  late ArticlesViewModel articlesProvider;
 
   @override
   void initState() {
@@ -32,8 +34,16 @@ class _SourcesViewState extends State<SourcesView> {
   }
 
   void fetchData() async {
-    sourcesProvider = SourcesProvider();
-    articlesProvider = ArticlesProvider();
+    sourcesProvider = SourcesViewModel(
+      sourcesRepository: SourcesRepositoryImpl(
+        sourcesDataSource: SourcesApiDataSource(apiServices: APIServices()),
+      ),
+    );
+    articlesProvider = ArticlesViewModel(
+      articlesRepository: ArticlesRepositoryImpl(
+        articlesDataSource: ArticlesApiDataSource(apiServices: APIServices()),
+      ),
+    );
     await sourcesProvider.fetchSources(widget.category);
     articlesProvider.fetchArticles(sourcesProvider.sources[0]);
   }
@@ -47,7 +57,7 @@ class _SourcesViewState extends State<SourcesView> {
       ],
       child: Column(
         children: [
-          Consumer<SourcesProvider>(
+          Consumer<SourcesViewModel>(
             builder: (context, sourcesProvider, child) {
               if (sourcesProvider.isLoading) {
                 return Center(child: CircularProgressIndicator());
@@ -93,7 +103,7 @@ class _SourcesViewState extends State<SourcesView> {
               );
             },
           ),
-          Consumer<ArticlesProvider>(
+          Consumer<ArticlesViewModel>(
             builder: (context, articlesProvider, child) {
               if (articlesProvider.isLoading) {
                 return Center(child: CircularProgressIndicator());
@@ -113,13 +123,11 @@ class _SourcesViewState extends State<SourcesView> {
               List<Article> articles = articlesProvider.articles;
               return Expanded(
                 child: ListView.separated(
-                        itemBuilder: (context, index) => ArticleItem(
-                          article: articles[index],
-                        ),
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 16.h),
-                        itemCount: articles.length,
-                      ),
+                  itemBuilder: (context, index) =>
+                      ArticleItem(article: articles[index]),
+                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
+                  itemCount: articles.length,
+                ),
               );
             },
           ),
